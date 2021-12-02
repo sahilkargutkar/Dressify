@@ -4,6 +4,8 @@ const {
   getSingleOrder,
   myOrders,
   getAllOrders,
+  updateOrderStatus,
+  deleteOrder,
 } = require("../controllers/orderController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const router = express.Router();

@@ -1,4 +1,5 @@
 import React from "react";
+import ReactStars from "react-rating-stars-component";
 
 const Card = (props) => {
   return (
@@ -15,6 +16,7 @@ const Card = (props) => {
             <span class="block bg-black rounded-full text-white text-xs font-bold px-3 py-2 leading-none flex items-center">
               $68.50
             </span>
+            <ReactStars />
           </div>
         </div>
       </div>

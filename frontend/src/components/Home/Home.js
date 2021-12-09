@@ -2,20 +2,28 @@ import React, { useEffect } from "react";
 import Card from "../layout/Card/Card";
 import Carousal from "../layout/Carousal/Carousal";
 import MetaData from "../layout/MetaData";
-import { getProduct } from "../../actions/productAction";
+import { clearErrors, getProduct } from "../../actions/productAction";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../layout/Loader/Loader";
+import toast, { Toaster } from "react-hot-toast";
 
 const Home = () => {
   const dispatch = useDispatch();
+  debugger;
   const { loading, error, products, productsCount } = useSelector(
     (state) => state.products
   );
 
   useEffect(() => {
     debugger;
+    toast.error(error);
+    dispatch(clearErrors());
     dispatch(getProduct());
-  }, [dispatch]);
+  }, [dispatch, error, toast]);
+
+  const buttonClick = () => {
+    toast.success("successful");
+  };
 
   return (
     <>
@@ -123,12 +131,13 @@ const Home = () => {
                 <h3 class="text-gray-600 text-2xl font-medium">Fashions</h3>
                 <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
                   {products &&
-                    products.map((product) => {
-                      <Card
-                        image="https://images.unsplash.com/photo-1593720219276-0b1eacd0aef4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1343&q=80"
-                        name="pant"
-                        product={product}
-                      />;
+                    products.map((product, index) => {
+                      console.log(products, "products from home ");
+                      return (
+                        <>
+                          <Card product={product} id={index} />
+                        </>
+                      );
                     })}
                 </div>
               </div>
@@ -138,22 +147,7 @@ const Home = () => {
               <div class="mt-16">
                 <h3 class="text-gray-600 text-2xl font-medium">Fashions</h3>
                 <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
-                  <Card
-                    image="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQwW78cQpnlIsKURtIdNXTP7q5qBI1Q-987110zAjOrJ_QoYd0vz_2JfD4yFGzGlcwSLFj7WtB8lPU0wHbMfG_NGYFuwm4I1JwstYTbYWEk&usqp=CAE"
-                    name="pant"
-                  />
-                  <Card
-                    image="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQwW78cQpnlIsKURtIdNXTP7q5qBI1Q-987110zAjOrJ_QoYd0vz_2JfD4yFGzGlcwSLFj7WtB8lPU0wHbMfG_NGYFuwm4I1JwstYTbYWEk&usqp=CAE"
-                    name="pant"
-                  />
-                  <Card
-                    image="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQwW78cQpnlIsKURtIdNXTP7q5qBI1Q-987110zAjOrJ_QoYd0vz_2JfD4yFGzGlcwSLFj7WtB8lPU0wHbMfG_NGYFuwm4I1JwstYTbYWEk&usqp=CAE"
-                    name="pant"
-                  />
-                  <Card
-                    image="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQwW78cQpnlIsKURtIdNXTP7q5qBI1Q-987110zAjOrJ_QoYd0vz_2JfD4yFGzGlcwSLFj7WtB8lPU0wHbMfG_NGYFuwm4I1JwstYTbYWEk&usqp=CAE"
-                    name="pant"
-                  />
+                  <Card />
                 </div>
               </div>
             </div>

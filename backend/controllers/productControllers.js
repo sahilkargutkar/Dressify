@@ -11,27 +11,52 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   res.status(201).json({ success: true, product });
 });
 
-exports.getAllProducts = catchAsyncErrors(async (req, res) => {
-  const resultPerPage = 5;
-  const productCount = await Product.countDocuments();
-  const apiFeatures = new ApiFeatures(Product.find(), req.query)
+exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
+  const resultPerPage = 8;
+  // const productsCount = await Product.countDocuments();
+
+  // const apiFeature = new ApiFeatures(Product.find(), req.query)
+  //   .search()
+  //   .filter();
+
+  // let products = await apiFeature.query;
+
+  // let filteredProductsCount = products.length;
+
+  // apiFeature.pagination(resultPerPage);
+
+  // products = await apiFeature.query;
+
+  // res.status(200).json({
+  //   success: true,
+  //   products,
+  //   productsCount,
+  //   resultPerPage,
+  //   filteredProductsCount,
+  // });
+  const productsCount = await Product.countDocuments();
+  const apiFeature = new ApiFeatures(Product.find(), req.query)
     .search()
     .filter()
     .pagination(resultPerPage);
-  const products = await apiFeatures.query;
+  const products = await apiFeature.query;
 
-  res.status(200).json({ success: true, products, productCount });
+  res.status(200).json({
+    success: true,
+    products,
+    productsCount,
+    resultPerPage,
+  });
 });
 
 exports.getProduct = catchAsyncErrors(async (req, res) => {
-  const product = await Product.findById();
+  const product = await Product.findById(req.params.id);
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));
   }
   res.status(200).json({
     success: true,
     product,
-    productCount,
   });
 });
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -66,12 +67,12 @@ const Header = () => {
                 >
                   Home
                 </a>
-                <a
+                <Link
                   class="my-1 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:mx-4 md:my-0"
-                  href="#"
+                  to="/products"
                 >
-                  Blog
-                </a>
+                  Products
+                </Link>
                 <a
                   class="my-1 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:mx-4 md:my-0"
                   href="#"

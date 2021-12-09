@@ -1,6 +1,6 @@
 const ErrorHandler = require("../utils/errorHandlers");
 
-module.exports = (req, res, next) => {
+module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.message = err.message || "Internal Server Error";
   //MongoDB ID Error

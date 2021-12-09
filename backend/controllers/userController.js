@@ -26,12 +26,12 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   if (!email || !password) {
     return next(new ErrorHandler("Please Enter Email and Password", 400));
   }
-  const user = User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
     return next(new ErrorHandler("Invalid email or Password", 401));
   }
-  const isPasswordMatched = user.comparePassword(password);
+  const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid Email or Password", 401));
@@ -40,7 +40,7 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.logout = catchAsyncErrors(async (req, res, next) => {
-  req.cookie("token", null, {
+  res.cookie("token", null, {
     expires: new Date(Date.now()),
     httpOnly: true,
   });

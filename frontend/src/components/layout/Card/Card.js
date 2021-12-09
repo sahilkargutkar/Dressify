@@ -1,25 +1,43 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
 
 const Card = (props) => {
+  const { product } = props;
+
+  console.log(product, "someprops");
+
+  const options = {
+    edit: false,
+    activeColor: "tomato",
+    size: window.innerWidth < 600 ? 20 : 25,
+    value: product?.ratings,
+    isHalf: true,
+  };
+
   return (
     <div>
-      <div class="flex flex-col overflow-hidden transition duration-500 ease-in-out transform bg-white rounded-lg shadow-2xl hover:scale-105">
-        <img class="h-56 rounded-t-lg" alt="article image" src={props.image} />
-        <div class="px-6 pt-4 mb-2 text-xl font-bold">
-          <span>{props.name}</span>
-        </div>
-        <div class="relative text-xl px-6 pb-6 mt-6">
-          <span class="block opacity-75 -mb-1">Outdoor</span>
-          <div class="flex justify-between">
-            <span class="block font-semibold text-xl">Oak Tree</span>
-            <span class="block bg-black rounded-full text-white text-xs font-bold px-3 py-2 leading-none flex items-center">
-              $68.50
+      <Link to={`/product/${product?._id}`}>
+        <div class="flex flex-col overflow-hidden transition duration-500 ease-in-out transform bg-white rounded-lg shadow-2xl hover:scale-105">
+          <img class="h-56 rounded-t-lg" alt="article image" src="" />
+          <div class="px-6 pt-4 mb-2 text-xl font-bold">{product?.name}</div>
+          <div class="relative text-xl px-6 pb-6 mt-6">
+            <span class="block opacity-75 -mb-1">
+              <ReactStars {...options} />
             </span>
-            <ReactStars />
+            <div class="flex justify-between">
+              <span class="block font-semibold text-xl">
+                {product?.description}
+              </span>
+              <span class=" bg-black rounded-full text-white text-xs font-bold px-3 py-2 leading-none flex items-center">
+                <span>₹</span>
+                {product?.price}
+              </span>
+              <span>({product?.numOfReviews}Reviews)</span>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
     </div>
 
     // <div class="flex-shrink-0 m-6 relative overflow-hidden bg-purple-500 rounded-lg max-w-xs shadow-lg">

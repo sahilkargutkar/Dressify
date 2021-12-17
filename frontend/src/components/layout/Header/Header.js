@@ -1,137 +1,195 @@
-import React from "react";
+import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Menu, Transition } from "@headlessui/react";
+import { toast } from "react-hot-toast";
+// import { Popover, Transition } from "@headlessui/react";
+import { ShoppingBagIcon } from "@heroicons/react/solid";
+import { useHistory } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../actions/userAction";
 
-const Header = () => {
+const Header = ({ user }) => {
+  const dispatch = useDispatch();
+
+  const { cartItems } = useSelector((state) => state.cart);
+
+  console.log("user profile", user);
+  const history = useHistory();
+
+  function toDashboard() {
+    history.push("/dashboard");
+  }
+  function toOrders() {
+    history.push("/orders");
+  }
+  function toAccount() {
+    history.push("/account");
+  }
+  function toCart() {
+    history.push("/cart");
+  }
+
+  function logoutAccount() {
+    dispatch(logout());
+    toast.success("Logged out successfully");
+  }
+
   return (
-    <nav className="container">
-      <div class=" bg-white shadow dark:bg-gray-800">
-        <div class="container px-6 py-3 mx-auto">
-          <div class="flex flex-col md:flex-row md:justify-between md:items-center">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <a
-                  class="text-2xl font-bold text-gray-800 dark:text-white lg:text-3xl hover:text-gray-700 dark:hover:text-gray-300"
-                  href="#"
-                >
-                  Brand
-                </a>
+    <>
+      <div class="p-3 text-gray-700 bg-gray-900 rounded-lg shadow-lg font-medium capitalize">
+        <span class="px-2 mr-2 border border-gray-800">
+          <img
+            src="https://www.freepnglogos.com/uploads/spotify-logo-png/file-spotify-logo-png-4.png"
+            alt="alt placeholder"
+            class="w-8 h-8 -mt-1 inline mx-auto"
+          />
+        </span>
+        <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
+          <span class="mx-1">Categories</span>
+        </span>
+        <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
+          <span class="mx-1">Orders</span>
+        </span>
+        <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
+          <span class="mx-1">Products</span>
+        </span>
+        <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
+          <span class="mx-1">Menu</span>
+        </span>
 
-                <div class="hidden mx-10 md:block">
-                  <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                      <svg
-                        class="w-5 h-5 text-gray-400"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        ></path>
-                      </svg>
-                    </span>
+        {/* <span class="px-1 hover:text-white cursor-pointer w-8 relative">
+      <i class="w-8 fas fa-bell p-2 bg-gray-800 rounded-full"></i>
+      <span class="absolute right-0 top-0 -mt-2 -mr-1 text-xs bg-red-500 text-white font-medium px-2 shadow-lg rounded-full">
+        3
+      </span>
+    </span> */}
+        {user ? (
+          <span class="flex cursor-pointer  relative float-right ">
+            {user ? (
+              <>
+                <Menu>
+                  <Menu.Button className="">
+                    <div class="flex justify-center px-3">
+                      <div class="flex relative w-12 items-center text-2xl rounded-full text-white">
+                        {user?.avatar.url ? (
+                          <img
+                            class="rounded-full"
+                            alt="Profile"
+                            src={user?.avatar.url}
+                          />
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </div>
+                  </Menu.Button>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-0 mr-10  w-32 mt-10 origin-top-right z-50 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            className={
+                              " hover:text-white text-gray-300 bg-gray-900 group rounded-md items-center w-full py-2 text-sm"
+                            }
+                            onClick={toAccount}
+                          >
+                            Profile
+                          </button>
+                        )}
+                      </Menu.Item>
 
-                    <input
-                      type="text"
-                      class="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                      placeholder="Search"
-                    />
-                  </div>
+                      {user?.role === "admin" ? (
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={
+                                "hover:text-white text-gray-300 bg-gray-900 group rounded-md items-center w-full py-2 text-sm"
+                              }
+                              onClick={toDashboard}
+                            >
+                              Dashboard
+                            </button>
+                          )}
+                        </Menu.Item>
+                      ) : (
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={
+                                "hover:text-white text-gray-300 bg-gray-900 group rounded-md items-center w-full py-2 text-sm"
+                              }
+                              onClick={toOrders}
+                            >
+                              Orders
+                            </button>
+                          )}
+                        </Menu.Item>
+                      )}
+                      {/* <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          className="hover:text-white text-gray-300 items-center bg-gray-900 group rounded-md w-full px-2 py-2 text-sm"
+                          onClick={toCart}
+                        >
+                          Cart
+                          {cartItems.length === 0 ? (
+                            <div></div>
+                          ) : (
+                            <span class="absolute right-0 top-0 -mt-1 text-xs bg-yellow-500 text-black font-medium px-2 rounded-full">
+                              {cartItems.length}
+                            </span>
+                          )}
+                        </button>
+                      )}
+                    </Menu.Item> */}
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            className="hover:text-white text-gray-300 items-center bg-gray-900 group rounded-md w-full px-2 py-2 text-sm"
+                            onClick={logoutAccount}
+                          >
+                            Logout
+                          </button>
+                        )}
+                      </Menu.Item>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+
+                <div className="flex pr-3 ">
+                  <button onClick={toCart}>
+                    <ShoppingBagIcon width={30} />
+                  </button>
                 </div>
-              </div>
-
-              <div class="flex md:hidden">
-                <button
-                  type="button"
-                  class="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
-                  aria-label="toggle menu"
-                >
-                  <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-                    <path
-                      fill-rule="evenodd"
-                      d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div class="items-center md:flex">
-              <div class="flex flex-col mt-2 md:flex-row md:mt-0 md:mx-1">
-                <a
-                  class="my-1 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:mx-4 md:my-0"
-                  href="#"
-                >
-                  Home
-                </a>
-                <Link
-                  class="my-1 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:mx-4 md:my-0"
-                  to="/products"
-                >
-                  Products
-                </Link>
-                <a
-                  class="my-1 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:mx-4 md:my-0"
-                  href="#"
-                >
-                  Compoents
-                </a>
-                <a
-                  class="my-1 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:mx-4 md:my-0"
-                  href="#"
-                >
-                  Courses
-                </a>
-              </div>
-
-              <div class="flex items-center py-2 -mx-1 md:mx-0">
-                <a
-                  class="block w-1/2 px-3 py-2 mx-1 text-sm font-medium leading-5 text-center text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-blue-600 md:mx-2 md:w-auto"
-                  href="#"
-                >
-                  Login
-                </a>
-                <a
-                  class="block w-1/2 px-3 py-2 mx-1 text-sm font-medium leading-5 text-center text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-600 md:mx-0 md:w-auto"
-                  href="#"
-                >
-                  Join free
-                </a>
-              </div>
-
-              <div class="mt-3 md:hidden">
-                <div class="relative">
-                  <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                    <svg
-                      class="w-5 h-5 text-gray-400"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </svg>
-                  </span>
-
-                  <input
-                    type="text"
-                    class="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                    placeholder="Search"
-                  />
+              </>
+            ) : (
+              <>
+                <div>
+                  <button>Login</button>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
+              </>
+            )}
+            {cartItems.length === 0 ? (
+              <div></div>
+            ) : (
+              <span class="absolute right-0 top-0 -mt-1 text-xs bg-yellow-500 text-black font-medium px-2 rounded-full">
+                {cartItems.length}
+              </span>
+            )}
+          </span>
+        ) : (
+          <></>
+        )}
       </div>
-    </nav>
+    </>
   );
 };
 

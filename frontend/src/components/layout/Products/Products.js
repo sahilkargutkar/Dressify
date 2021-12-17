@@ -7,14 +7,33 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Card from "../Card/Card";
 import Pagination from "react-js-pagination";
+import { useHistory } from "react-router";
+import toast from "react-hot-toast";
+import MetaData from "../MetaData";
+
+const categories = [
+  "Laptop",
+  "Footwear",
+  "bottomwear",
+  "Tops",
+  "Attire",
+  "Jacket",
+];
 
 const Products = ({ match }) => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 25000]);
+  const [category, setCategory] = useState("");
 
-  const { products, loading, error, productsCount, resultPerPage } =
-    useSelector((state) => state.products);
+  const {
+    products,
+    loading,
+    error,
+    productsCount,
+    resultPerPage,
+    filteredProductsCount,
+  } = useSelector((state) => state.products);
 
   const setCurrentPageNo = (e) => {
     setCurrentPage(e);
@@ -24,15 +43,30 @@ const Products = ({ match }) => {
     setPrice(newPrice);
   };
 
+  const clearFilters = () => {
+    window.location.reload();
+  };
+
   const keyword = match.params.keyword;
 
   const priceRangeUpdate = useCallback(() => {
-    dispatch(getProduct(keyword, currentPage, price));
-  }, [keyword, currentPage, price]);
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+    dispatch(getProduct(keyword, currentPage, price, category));
+  }, [keyword, currentPage, price, category, error]);
 
   useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+
     dispatch(getProduct(keyword, currentPage));
-  }, [dispatch, keyword, currentPage]);
+  }, [dispatch, keyword, currentPage, error]);
+
+  let count = filteredProductsCount;
 
   return (
     <>
@@ -40,6 +74,7 @@ const Products = ({ match }) => {
         <Loader />
       ) : (
         <>
+          <MetaData title="Dressify | PRODUCTS" />
           <div class="my-8">
             <div class="container mx-auto px-6">
               <div class="mt-16">
@@ -110,7 +145,48 @@ const Products = ({ match }) => {
                               )}
                             </Popover.Panel>
                           </div>
-                          <button onClick={priceRangeUpdate}>Apply</button>
+                          <div>
+                            <Popover.Panel>
+                              {({ active }) => (
+                                <div
+                                  href="#account-settings"
+                                  className={`${
+                                    active
+                                      ? "bg-gray-100 text-gray-900"
+                                      : "text-gray-700"
+                                  } flex justify-between w-full px-4 py-2 text-sm leading-5 text-left`}
+                                >
+                                  <ul className="">
+                                    {categories.map((category) => (
+                                      <li
+                                        className="items-center list-none cursor-pointer transform delay-300 hover:text-blue-600"
+                                        key={category}
+                                        onClick={() => {
+                                          setCategory(category);
+                                        }}
+                                      >
+                                        <input type="checkbox" />
+                                        {category}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </Popover.Panel>
+                          </div>
+
+                          <button
+                            onClick={priceRangeUpdate}
+                            className="text-white rounded-lg bg-blue-500 shadow-lg block md:inline-block"
+                          >
+                            Apply
+                          </button>
+                          <button
+                            onClick={clearFilters}
+                            className="text-white rounded-lg bg-red-500 shadow-lg block md:inline-block"
+                          >
+                            Clear
+                          </button>
                         </Popover.Panel>
                       </Transition>
                     </>
@@ -129,7 +205,7 @@ const Products = ({ match }) => {
                 </div>
               </div>
             </div>
-            {resultPerPage < productsCount && (
+            {resultPerPage < count && (
               <div className="flex justify-center my-12">
                 <Pagination
                   innerClass="flex justify-center p-0"

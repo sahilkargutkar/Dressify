@@ -2,9 +2,17 @@ const ErrorHandler = require("../utils/errorHandlers");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const User = require("../models/userModel");
 const sendToken = require("../utils/jwtToken");
+const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
+const cloudinary = require("cloudinary");
 
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
+
   const { name, email, password } = req.body;
 
   const user = await User.create({
@@ -12,8 +20,8 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     email,
     password,
     avatar: {
-      public_id: "This is a sample id",
-      url: "profile pic",
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     },
   });
 
@@ -121,7 +129,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
-  req.status(200).json({
+  res.status(200).json({
     success: true,
     user,
   });
@@ -153,6 +161,25 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     email: req.body.email,
   };
 
+  if (req.body.avatar !== "") {
+    const user = await User.findById(req.user.id);
+
+    const imageId = user.avatar.public_id;
+
+    await cloudinary.v2.uploader.destroy(imageId);
+
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
+
+    newUserData.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
+
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
     runValidators: true,
@@ -165,7 +192,7 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getAllUser = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.find();
+  const users = await User.find();
 
   res.status(200).json({
     success: true,

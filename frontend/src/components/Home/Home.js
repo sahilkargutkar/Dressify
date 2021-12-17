@@ -16,10 +16,12 @@ const Home = () => {
 
   useEffect(() => {
     debugger;
-    toast.error(error);
-    dispatch(clearErrors());
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
     dispatch(getProduct());
-  }, [dispatch, error, toast]);
+  }, [dispatch, error]);
 
   const buttonClick = () => {
     toast.success("successful");

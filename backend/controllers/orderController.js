@@ -26,7 +26,7 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     user: req.user._id,
   });
 
-  req.status(200).json({
+  res.status(200).json({
     success: true,
     order,
   });

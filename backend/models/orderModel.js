@@ -18,7 +18,7 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    pincode: {
+    pinCode: {
       type: Number,
       required: true,
     },
@@ -59,7 +59,8 @@ const orderSchema = new mongoose.Schema({
   },
   paymentInfo: {
     id: {
-      type: String,
+      type: Date,
+      default: Date.now(),
       required: true,
     },
     status: {

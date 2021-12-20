@@ -182,6 +182,7 @@ const ProductDetails = ({ match }) => {
                       </button>
                     </div>
                     <button
+                      disabled={product?.Stock < 1 ? true : false}
                       onClick={addToCartHandler}
                       class="flex ml-autos text-white bg-red-500 border-0 py-3 px-6 focus:outline-none hover:bg-red-600 rounded"
                     >
@@ -212,6 +213,13 @@ const ProductDetails = ({ match }) => {
                       </b>
                     </p>
                   </div>
+                  <button
+                    class="mb-2 mt-6 md:mb-0 bg-gray-600 px-5 py-2 shadow-sm tracking-wider text-white rounded-full"
+                    type="button"
+                    aria-label="like"
+                  >
+                    submit review
+                  </button>
                 </div>
               </div>
             </div>

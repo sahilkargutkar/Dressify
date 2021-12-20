@@ -2,7 +2,12 @@ import "./App.css";
 import Header from "./components/layout/Header/Header";
 import Footer from "./components/layout/Footer/Footer";
 import toast, { Toaster } from "react-hot-toast";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useHistory,
+} from "react-router-dom";
 import Home from "./components/Home/Home";
 import { loadUser } from "./actions/userAction";
 import Loader from "./components/layout/Loader/Loader";
@@ -24,9 +29,13 @@ import Cart from "./components/Cart/Cart";
 import Shipping from "./components/Cart/Shipping";
 import ConfirmOrder from "./components/Cart/ConfirmOrder";
 import OrderSuccess from "./components/Cart/OrderSuccess";
+import MyOrders from "./components/Orders/MyOrders";
+import OrderDetails from "./components/Orders/OrderDetails";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
+
+  const history = useHistory();
 
   console.log(user, "home user");
 
@@ -35,33 +44,38 @@ function App() {
   }, []);
 
   return (
-    <>
-      <Router>
-        {isAuthenticated ? <Header user={user} /> : <Header />}
-        <Toaster />
-        <Route exact path="/" component={Home} />
-        <Route exact path="/product/:id" component={ProductDetails} />
-        <Route exact path="/products" component={Products} />
-        <Route path="/products/:keyword" component={Products} />
-        <Route exact path="/search" component={Search} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <ProtectedRoutes exact path="/account" component={Profile} />
-        <ProtectedRoutes exact path="/me/update" component={UpdateProfile} />
-        <ProtectedRoutes
-          exact
-          path="/password/update"
-          component={UpdatePassword}
-        />
-        <ProtectedRoutes exact path="/shipping" component={Shipping} />
-        <Route exact path="/password/forgot" component={ForgotPassword} />
-        <Route exact path="/password/reset/:token" component={ResetPassword} />
-        <Route exact path="/cart" component={Cart} />
-        <Route exact path="/order/confirm" component={ConfirmOrder} />
-        <Route exact path="/success" component={OrderSuccess} />
-        <Footer />
-      </Router>
-    </>
+    <Router history={history}>
+      {isAuthenticated ? <Header user={user} /> : <Header />}
+      <Toaster />
+
+      <Route exact path="/" component={Home} />
+      <Route exact path="/product/:id" component={ProductDetails} />
+      <Route exact path="/products" component={Products} />
+      <Route path="/products/:keyword" component={Products} />
+      <Route exact path="/search" component={Search} />
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/register" component={Register} />
+      <ProtectedRoutes exact path="/account" component={Profile} />
+      <ProtectedRoutes exact path="/me/update" component={UpdateProfile} />
+      <ProtectedRoutes
+        exact
+        path="/password/update"
+        component={UpdatePassword}
+      />
+
+      <Route exact path="/password/forgot" component={ForgotPassword} />
+      <Route exact path="/password/reset/:token" component={ResetPassword} />
+      <Route exact path="/cart" component={Cart} />
+
+      <ProtectedRoutes exact path="/success" component={OrderSuccess} />
+      <ProtectedRoutes exact path="/shipping" component={Shipping} />
+      <Switch>
+        <ProtectedRoutes exact path="/order/confirm" component={ConfirmOrder} />
+        <ProtectedRoutes exact path="/order/:id" component={OrderDetails} />
+      </Switch>
+      <ProtectedRoutes exact path="/orders" component={MyOrders} />
+      <Footer />
+    </Router>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createOrder } from "../../actions/orderAction";
+import { clearErrors, createOrder } from "../../actions/orderAction";
 import { toast } from "react-hot-toast";
 
 const ConfirmOrder = ({ history }) => {
@@ -22,21 +22,21 @@ const ConfirmOrder = ({ history }) => {
     status: "succeeded",
   };
 
-  const order = {
-    shippingInfo,
-    orderItems: cartItems,
-    paymentInfo: paymentDetails,
-    itemsPrice: orderInfo.subtotal,
-    taxPrice: orderInfo.tax,
-    shippingPrice: orderInfo.shippingCharges,
-    totalPrice: orderInfo.totalPrice,
-  };
-
   const tax = 0;
 
   const shippingCharges = 0;
 
   const totalPrice = subtotal + shippingCharges + tax;
+
+  const order = {
+    shippingInfo,
+    orderItems: cartItems,
+    paymentInfo: paymentDetails,
+    itemsPrice: orderInfo?.subtotal,
+    taxPrice: orderInfo?.tax,
+    shippingPrice: orderInfo?.shippingCharges,
+    totalPrice: orderInfo?.totalPrice,
+  };
 
   const onOrderPlacement = () => {
     const data = {
@@ -53,10 +53,12 @@ const ConfirmOrder = ({ history }) => {
   };
 
   useEffect(() => {
+    debugger;
     if (error) {
       toast.error(error);
+      dispatch(clearErrors());
     }
-  });
+  }, [error, dispatch]);
 
   return (
     <div>

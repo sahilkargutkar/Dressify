@@ -25,10 +25,10 @@ const OrderSuccess = () => {
             <p> Have a great day! </p>
             <div class="py-10 text-center">
               <Link
-                to="/products"
+                to="/orders"
                 class="px-12 bg-gray-800 hover:bg-black text-white font-semibold py-3"
               >
-                GO BACK
+                View Orders
               </Link>
             </div>
           </div>

@@ -13,7 +13,6 @@ const Header = ({ user }) => {
 
   const { cartItems } = useSelector((state) => state.cart);
 
-  console.log("user profile", user);
   const history = useHistory();
 
   function toDashboard() {
@@ -45,16 +44,22 @@ const Header = ({ user }) => {
           />
         </span>
         <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
-          <span class="mx-1">Categories</span>
+          <button onClick={() => history.push("/")} class="mx-1">
+            Home
+          </button>
         </span>
         <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
-          <span class="mx-1">Orders</span>
+          <button onClick={toOrders} class="mx-1">
+            Orders
+          </button>
         </span>
         <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
-          <span class="mx-1">Products</span>
+          <button onClick={() => history.push("/products")} class="mx-1">
+            Products
+          </button>
         </span>
         <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
-          <span class="mx-1">Menu</span>
+          <button class="mx-1">Menu</button>
         </span>
 
         {/* <span class="px-1 hover:text-white cursor-pointer w-8 relative">

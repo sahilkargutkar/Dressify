@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import toast from "react-hot-toast";
 import ReactStars from "react-rating-stars-component";
+import { Rating } from "@material-ui/lab";
 import { useSelector, useDispatch } from "react-redux";
-import { clearErrors, getProductDetails } from "../../../actions/productAction";
+import {
+  clearErrors,
+  getProductDetails,
+  newReview,
+} from "../../../actions/productAction";
 import Loader from "../Loader/Loader";
 import MetaData from "../MetaData";
+import { Dialog, Transition } from "@headlessui/react";
 import ReviewComponent from "../ReviewComponent/ReviewComponent";
 import { addToCart } from "../../../actions/cartAction";
+import { NEW_REVIEW_RESET } from "../../../constants/productConstants";
 
 const ProductDetails = ({ match }) => {
   const dispatch = useDispatch();
@@ -15,13 +22,30 @@ const ProductDetails = ({ match }) => {
     (state) => state.productDetails
   );
 
+  const { user } = useSelector((state) => state.user);
+
+  const { success, error: reviewError } = useSelector(
+    (state) => state.newReview
+  );
+
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState("");
+
+  let [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
   const options = {
-    edit: false,
-    color: "rgba(20,20,20,0.1)",
-    activeColor: "tomato",
-    size: window.innerWidth < 600 ? 20 : 25,
+    size: "large",
     value: product?.ratings,
-    isHalf: true,
+    readOnly: true,
+    precision: 0.5,
   };
 
   useEffect(() => {
@@ -30,8 +54,18 @@ const ProductDetails = ({ match }) => {
       dispatch(clearErrors());
     }
 
+    if (reviewError) {
+      toast.error(reviewError);
+      dispatch(clearErrors());
+    }
+
+    if (success) {
+      toast.success("Review Submitted Successfully");
+      dispatch({ type: NEW_REVIEW_RESET });
+    }
+
     dispatch(getProductDetails(match.params.id));
-  }, [dispatch, match.params.id]);
+  }, [dispatch, match.params.id, success, reviewError, error]);
 
   const [quantity, setQuantity] = useState(1);
 
@@ -51,6 +85,16 @@ const ProductDetails = ({ match }) => {
   const addToCartHandler = () => {
     dispatch(addToCart(match.params.id, quantity));
     toast.success("Items Added to Cart");
+  };
+
+  const submitReviewHandler = () => {
+    const myForm = new FormData();
+    myForm.set("rating", rating);
+    myForm.set("comment", comment);
+    myForm.set("productId", match.params.id);
+
+    dispatch(newReview(myForm));
+    setIsOpen(false);
   };
 
   return (
@@ -77,7 +121,7 @@ const ProductDetails = ({ match }) => {
                   </h1>
                   <div class="flex mb-4">
                     <span class="flex items-center">
-                      <ReactStars {...options} />
+                      <Rating {...options} />
                       <span class="text-gray-600 ml-3">
                         {product?.numOfReviews} Reviews
                       </span>
@@ -217,27 +261,114 @@ const ProductDetails = ({ match }) => {
                     class="mb-2 mt-6 md:mb-0 bg-gray-600 px-5 py-2 shadow-sm tracking-wider text-white rounded-full"
                     type="button"
                     aria-label="like"
+                    onClick={openModal}
                   >
                     submit review
                   </button>
+
+                  <Transition appear show={isOpen} as={Fragment}>
+                    <Dialog
+                      as="div"
+                      className="fixed inset-0 z-10 overflow-y-auto"
+                      onClose={closeModal}
+                    >
+                      <div className="min-h-screen px-4 text-center">
+                        <Transition.Child
+                          as={Fragment}
+                          enter="ease-out duration-300"
+                          enterFrom="opacity-0"
+                          enterTo="opacity-100"
+                          leave="ease-in duration-200"
+                          leaveFrom="opacity-100"
+                          leaveTo="opacity-0"
+                        >
+                          <Dialog.Overlay className="fixed inset-0" />
+                        </Transition.Child>
+
+                        {/* This element is to trick the browser into centering the modal contents. */}
+                        <span
+                          className="inline-block h-screen align-middle"
+                          aria-hidden="true"
+                        >
+                          &#8203;
+                        </span>
+                        <Transition.Child
+                          as={Fragment}
+                          enter="ease-out duration-300"
+                          enterFrom="opacity-0 scale-95"
+                          enterTo="opacity-100 scale-100"
+                          leave="ease-in duration-200"
+                          leaveFrom="opacity-100 scale-100"
+                          leaveTo="opacity-0 scale-95"
+                        >
+                          <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                            <Dialog.Title
+                              as="h3"
+                              className="text-lg font-medium leading-6 text-gray-900"
+                            >
+                              <h2 class="text-gray-800 text-3xl font-semibold">
+                                Your opinion matters to us!
+                              </h2>
+                            </Dialog.Title>
+                            <div class="px-32 mt-3 ">
+                              <Rating
+                                size="large"
+                                value={rating}
+                                onChange={(e) => setRating(e.target.value)}
+                              />
+                            </div>
+
+                            <div class="w-full flex flex-col mt-3">
+                              <textarea
+                                rows="3"
+                                class="p-4 text-black rounded-xl border-2 resize-none"
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                              >
+                                Great Product !
+                              </textarea>
+                              <button
+                                onClick={submitReviewHandler}
+                                class="py-3 my-8 text-lg bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl text-white"
+                              >
+                                submit review
+                              </button>
+                            </div>
+
+                            <div className="mt-4">
+                              <button
+                                type="button"
+                                className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                onClick={closeModal}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        </Transition.Child>
+                      </div>
+                    </Dialog>
+                  </Transition>
                 </div>
               </div>
             </div>
-
-            {product?.reviews && product?.reviews[0] ? (
-              <div>
-                {product?.reviews &&
-                  product?.reviews.map((review) => (
-                    <ReviewComponent review={review} />
-                  ))}
-              </div>
-            ) : (
-              <div class="justify-center flex">
-                <p className="rounded p-4 border-4 mr-0 font-bold text-xl text-gray-900 border-gray-500 bg-white">
-                  No Reviews Yet
-                </p>
-              </div>
-            )}
+            <h3 className="text-center font-bold text-lg">Top Reviews</h3>
+            <div className=" mx-96">
+              {product?.reviews && product?.reviews[0] ? (
+                <div>
+                  {product?.reviews &&
+                    product?.reviews.map((review) => (
+                      <ReviewComponent review={review} user={user} />
+                    ))}
+                </div>
+              ) : (
+                <div class="justify-center flex">
+                  <p className="rounded p-4 border-4 mr-0 font-bold text-xl text-gray-900 border-gray-500 bg-white">
+                    No Reviews Yet
+                  </p>
+                </div>
+              )}
+            </div>
           </section>
         </>
       )}

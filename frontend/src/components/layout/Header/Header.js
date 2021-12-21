@@ -16,7 +16,7 @@ const Header = ({ user }) => {
   const history = useHistory();
 
   function toDashboard() {
-    history.push("/dashboard");
+    history.push("/admin/dashboard");
   }
   function toOrders() {
     history.push("/orders");

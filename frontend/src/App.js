@@ -31,6 +31,8 @@ import ConfirmOrder from "./components/Cart/ConfirmOrder";
 import OrderSuccess from "./components/Cart/OrderSuccess";
 import MyOrders from "./components/Orders/MyOrders";
 import OrderDetails from "./components/Orders/OrderDetails";
+import Dashboard from "./components/Admin/Dashboard";
+import ProductList from "./components/Admin/ProductList";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -53,7 +55,7 @@ function App() {
       <Route exact path="/products" component={Products} />
       <Route path="/products/:keyword" component={Products} />
       <Route exact path="/search" component={Search} />
-      <Route exact path="/login" component={Login} />
+
       <Route exact path="/register" component={Register} />
       <ProtectedRoutes exact path="/account" component={Profile} />
       <ProtectedRoutes exact path="/me/update" component={UpdateProfile} />
@@ -64,16 +66,30 @@ function App() {
       />
 
       <Route exact path="/password/forgot" component={ForgotPassword} />
+
       <Route exact path="/password/reset/:token" component={ResetPassword} />
       <Route exact path="/cart" component={Cart} />
 
       <ProtectedRoutes exact path="/success" component={OrderSuccess} />
       <ProtectedRoutes exact path="/shipping" component={Shipping} />
       <Switch>
+        <Route exact path="/login" component={Login} />
         <ProtectedRoutes exact path="/order/confirm" component={ConfirmOrder} />
         <ProtectedRoutes exact path="/order/:id" component={OrderDetails} />
       </Switch>
       <ProtectedRoutes exact path="/orders" component={MyOrders} />
+      <ProtectedRoutes
+        isAdmin={true}
+        exact
+        path="/admin/dashboard"
+        component={Dashboard}
+      />
+      <ProtectedRoutes
+        isAdmin={true}
+        exact
+        path="/admin/products"
+        component={ProductList}
+      />
       <Footer />
     </Router>
   );

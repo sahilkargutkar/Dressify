@@ -4,21 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   clearErrors,
-  getAdminProducts,
-  deleteProduct,
-  updateProduct,
-} from "../../actions/productAction";
-import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
+  deleteOrder,
+  getAllOrders,
+} from "../../actions/orderAction";
+import { DELETE_ORDERS_RESET } from "../../constants/orderConstants";
 import Loader from "../layout/Loader/Loader";
 
-const ProductList = ({ history }) => {
+const OrderList = ({ history }) => {
   const dispatch = useDispatch();
 
-  const { loading, error, products } = useSelector((state) => state.products);
+  const { error, orders } = useSelector((state) => state.allOrders);
 
-  const { error: deleteError, isDeleted } = useSelector(
-    (state) => state.product
-  );
+  const { error: deleteError, isDeleted } = useSelector((state) => state.order);
 
   useEffect(() => {
     if (error) {
@@ -32,19 +29,19 @@ const ProductList = ({ history }) => {
     }
 
     if (isDeleted) {
-      toast.success("Product Deleted Successfully");
-      history.push("/admin/dashboard");
-      dispatch({ type: DELETE_PRODUCT_RESET });
+      toast.success("Order Deleted Successfully");
+      history.push("/admin/orders");
+      dispatch({ type: DELETE_ORDERS_RESET });
     }
 
-    dispatch(getAdminProducts());
+    dispatch(getAllOrders());
   }, [error, dispatch, toast, deleteError, history, isDeleted]);
 
   const onHandleDelete = (id) => {
-    dispatch(deleteProduct(id));
+    dispatch(deleteOrder(id));
   };
   const onHandleEdit = (id) => {
-    history.push(`/admin/product/${id}`);
+    history.push(`/admin/order/${id}`);
   };
 
   return (
@@ -62,13 +59,13 @@ const ProductList = ({ history }) => {
               ID
             </th>
             <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Item Name
+              Items Quantity
             </th>
             <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Price
+              Amount
             </th>
             <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Stock
+              Status
             </th>
             <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               Actions
@@ -76,8 +73,8 @@ const ProductList = ({ history }) => {
           </tr>
         </thead>
         <tbody>
-          {products && products.length > 0 ? (
-            products?.map((item) => {
+          {orders && orders.length > 0 ? (
+            orders?.map((item) => {
               console.log(item, "order items");
 
               return (
@@ -94,16 +91,18 @@ const ProductList = ({ history }) => {
                     </div>
                   </td>
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p class="text-gray-900 whitespace-no-wrap">{item?.name}</p>
-                  </td>
-                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p class="text-gray-900 whitespace-no-wrap">
-                      {item?.price}
+                      {item?.orderItems.length}
                     </p>
                   </td>
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p class="text-gray-900 whitespace-no-wrap">
-                      {item?.Stock}
+                      {item?.totalPrice}
+                    </p>
+                  </td>
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p class="text-gray-900 whitespace-no-wrap">
+                      {item?.orderStatus}
                     </p>
                   </td>
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -150,4 +149,4 @@ const ProductList = ({ history }) => {
   );
 };
 
-export default ProductList;
+export default OrderList;

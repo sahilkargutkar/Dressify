@@ -18,21 +18,24 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { getAllOrders } from "../../actions/orderAction";
 import { getAdminProducts } from "../../actions/productAction";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
 
   const { loading, products } = useSelector((state) => state.products);
+  const { orders } = useSelector((state) => state.allOrders);
 
   useEffect(() => {
     dispatch(getAdminProducts());
+    dispatch(getAllOrders());
   }, [dispatch]);
 
   let outOfStock = 0;
 
   products &&
-    products.forEach((item) => {
+    products?.forEach((item) => {
       if (item.Stock === 0) {
         outOfStock += 1;
       }
@@ -244,8 +247,8 @@ const Dashboard = () => {
             </a>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              to="/admin/orders"
               class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
             >
               <span class="text-gray-600">
@@ -264,8 +267,8 @@ const Dashboard = () => {
                   />
                 </svg>
               </span>
-              <span>My orders</span>
-            </a>
+              <span>All orders</span>
+            </Link>
           </li>
           <li>
             <a
@@ -522,10 +525,10 @@ const Dashboard = () => {
                       <div class="flex justify-between items-start">
                         <div class="flex flex-col">
                           <p class="text-xs text-gray-600 tracking-wide">
-                            Groceries
+                            Orders
                           </p>
                           <h3 class="mt-1 text-lg text-green-500 font-bold">
-                            $ 8,918
+                            {orders && orders?.length} Nos
                           </h3>
                           <span class="mt-4 text-xs text-gray-500">
                             Last Transaction 3 Days ago

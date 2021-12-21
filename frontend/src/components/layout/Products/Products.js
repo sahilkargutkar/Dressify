@@ -193,15 +193,20 @@ const Products = ({ match }) => {
                   )}
                 </Popover>
                 <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
-                  {products &&
-                    products.map((product, index) => {
+                  {products && products.length > 0 ? (
+                    products?.map((product, index) => {
                       console.log(products, "products from home ");
                       return (
                         <>
                           <Card product={product} id={index} />
                         </>
                       );
-                    })}
+                    })
+                  ) : (
+                    <>
+                      <Loader />
+                    </>
+                  )}
                 </div>
               </div>
             </div>

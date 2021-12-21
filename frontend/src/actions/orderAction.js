@@ -7,6 +7,17 @@ import {
   MY_ORDERS_FAIL,
   MY_ORDERS_REQUEST,
   MY_ORDERS_SUCCESS,
+  ALL_ORDERS_FAIL,
+  ALL_ORDERS_REQUEST,
+  ALL_ORDERS_SUCCESS,
+  UPDATE_ORDERS_FAIL,
+  UPDATE_ORDERS_REQUEST,
+  UPDATE_ORDERS_SUCCESS,
+  UPDATE_ORDERS_RESET,
+  DELETE_ORDERS_FAIL,
+  DELETE_ORDERS_REQUEST,
+  DELETE_ORDERS_RESET,
+  DELETE_ORDERS_SUCCESS,
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
@@ -39,6 +50,56 @@ export const myOrders = () => async (dispatch) => {
     dispatch({ type: MY_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
     dispatch({ type: MY_ORDERS_FAIL, payload: error.response.data.error });
+  }
+};
+//get all orders (admin)
+export const getAllOrders = () => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_ORDERS_REQUEST });
+
+    const { data } = await axios.get("/api/v1/admin/orders");
+    console.log(data, "ALL orders data");
+
+    dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
+  } catch (error) {
+    dispatch({ type: ALL_ORDERS_FAIL, payload: error.response.data.error });
+  }
+};
+
+//Update Order
+export const updateOrder = (id, order) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_ORDERS_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.put(
+      `/api/v1/admin/order/${id}`,
+      order,
+      config
+    );
+
+    dispatch({ type: UPDATE_ORDERS_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({ type: UPDATE_ORDERS_FAIL, payload: error.response.data.error });
+  }
+};
+
+//Update Order
+export const deleteOrder = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETE_ORDERS_REQUEST });
+
+    const { data } = await axios.delete(`/api/v1/admin/order/${id}`);
+
+    console.log("data delete order", data);
+
+    dispatch({ type: DELETE_ORDERS_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({ type: DELETE_ORDERS_FAIL, payload: error.response.data.error });
   }
 };
 

@@ -14,7 +14,7 @@ import MetaData from "../MetaData";
 const categories = [
   "Laptop",
   "Footwear",
-  "bottomwear",
+  "Bottomwear",
   "Tops",
   "Attire",
   "Jacket",
@@ -146,6 +146,9 @@ const Products = ({ match }) => {
                             </Popover.Panel>
                           </div>
                           <div>
+                            <div className="text-sm leading-5 px-5 text-center">
+                              Category
+                            </div>
                             <Popover.Panel>
                               {({ active }) => (
                                 <div
@@ -177,13 +180,14 @@ const Products = ({ match }) => {
 
                           <button
                             onClick={priceRangeUpdate}
-                            className="text-white rounded-lg bg-blue-500 shadow-lg block md:inline-block"
+                            className="text-white px-1 py-1 rounded-lg bg-blue-500 shadow-lg block md:inline-block"
                           >
                             Apply
                           </button>
+                          <span className=""> </span>
                           <button
                             onClick={clearFilters}
-                            className="text-white rounded-lg bg-red-500 shadow-lg block md:inline-block"
+                            className="text-white px-1 py-1 rounded-lg bg-red-500 shadow-lg block md:inline-block"
                           >
                             Clear
                           </button>

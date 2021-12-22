@@ -21,7 +21,7 @@ const Profile = ({ history }) => {
         <div>
           <MetaData title={`${user?.name}'s Profile`} />
           <div class="w-full relative mt-4 shadow-2xl rounded my-24 overflow-hidden">
-            <div class="top h-64 w-full bg-blue-600 overflow-hidden relative">
+            <div class="top h-64 w-full bg-black overflow-hidden relative">
               <img
                 src={user?.avatar.url}
                 alt=""
@@ -42,20 +42,22 @@ const Profile = ({ history }) => {
               <div class="col-span-12 w-full px-3 py-6 justify-center flex space-x-4 border-b border-solid md:space-x-0 md:space-y-4 md:flex-col md:col-span-2 md:justify-start ">
                 <a
                   href="#"
-                  class="text-sm p-2 bg-indigo-900 text-white text-center rounded font-bold"
+                  class="text-sm p-2 bg-black text-white text-center rounded font-bold"
                 >
                   Basic Information
                 </a>
-
-                <button class="text-sm p-2 bg-indigo-200 text-center rounded font-semibold hover:bg-indigo-700 hover:text-gray-200">
-                  <Link to="/me/update">Edit Profile</Link>
-                </button>
-                <a
-                  href="#"
-                  class="text-sm p-2 bg-indigo-200 text-center rounded font-semibold hover:bg-indigo-700 hover:text-gray-200"
+                <Link
+                  className="text-sm p-2 bg-indigo-200 text-center rounded font-extrabold hover:bg-gray-700 hover:text-gray-200"
+                  to="/me/update"
+                >
+                  <button className="font-semibold">Edit Profile</button>
+                </Link>
+                <Link
+                  to="/contact"
+                  class="text-sm p-2 bg-gray-200 text-center rounded font-semibold hover:bg-gray-700 hover:text-gray-200"
                 >
                   Contact Support
-                </a>
+                </Link>
               </div>
 
               <div class="col-span-12 md:border-solid md:border-l md:border-black md:border-opacity-25 h-full pb-12 md:col-span-10">

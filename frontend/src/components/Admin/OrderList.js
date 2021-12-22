@@ -82,7 +82,7 @@ const OrderList = ({ history }) => {
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <div class="flex items-center">
                       <div class="ml-3">
-                        <Link to={`/product/${item?._id}`}>
+                        <Link to={`/order/${item?._id}`}>
                           <p class="text-gray-900 hover:text-blue-600 whitespace-no-wrap">
                             {item?._id}
                           </p>

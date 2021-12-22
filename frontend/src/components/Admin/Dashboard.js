@@ -20,17 +20,28 @@ import {
 } from "recharts";
 import { getAllOrders } from "../../actions/orderAction";
 import { getAdminProducts } from "../../actions/productAction";
+import { getAllUsers, logout } from "../../actions/userAction";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
 
   const { loading, products } = useSelector((state) => state.products);
   const { orders } = useSelector((state) => state.allOrders);
+  const { users } = useSelector((state) => state.allUsers);
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getAdminProducts());
     dispatch(getAllOrders());
+    dispatch(getAllUsers());
   }, [dispatch]);
+
+  let totalAmount = 0;
+
+  orders &&
+    orders?.forEach((item) => {
+      totalAmount += item.totalPrice;
+    });
 
   let outOfStock = 0;
 
@@ -78,46 +89,46 @@ const Dashboard = () => {
 
   const data = [
     {
-      name: "Page A",
+      name: "Dec",
+      uv: 5000,
+      pv: 4300,
+      amt: 2100,
+    },
+    {
+      name: "Jan",
       uv: 4000,
       pv: 2400,
       amt: 2400,
     },
     {
-      name: "Page B",
+      name: "Feb",
       uv: 3000,
       pv: 1398,
       amt: 2210,
     },
     {
-      name: "Page C",
+      name: "Mar",
       uv: 2000,
       pv: 9800,
       amt: 2290,
     },
     {
-      name: "Page D",
+      name: "Apr",
       uv: 2780,
       pv: 3908,
       amt: 2000,
     },
     {
-      name: "Page E",
+      name: "May",
       uv: 1890,
       pv: 4800,
       amt: 2181,
     },
     {
-      name: "Page F",
+      name: "June",
       uv: 2390,
       pv: 3800,
       amt: 2500,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
     },
   ];
 
@@ -125,10 +136,10 @@ const Dashboard = () => {
     <div class="flex flex-wrap bg-gray-100 w-full h-screen">
       <div class="w-1/6 bg-white rounded p-3 shadow-lg">
         <div class="flex items-center space-x-4 p-2 mb-5">
-          <img class="h-12 rounded-full" src="" alt="Admin" />
+          <img class="h-12 rounded-full" src={user?.avatar?.url} alt="Admin" />
           <div>
             <h4 class="font-semibold text-lg text-gray-700 capitalize font-poppins tracking-wide">
-              Saurabh
+              {user?.name}
             </h4>
             <span class="text-sm tracking-wide flex items-center space-x-1">
               <svg
@@ -199,8 +210,8 @@ const Dashboard = () => {
             </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              to="/admin/product"
               class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
             >
               <span class="text-gray-600">
@@ -220,11 +231,11 @@ const Dashboard = () => {
                 </svg>
               </span>
               <span>Create Products</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              to="/admin/users"
               class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
             >
               <span class="text-gray-600">
@@ -244,7 +255,7 @@ const Dashboard = () => {
                 </svg>
               </span>
               <span>Users</span>
-            </a>
+            </Link>
           </li>
           <li>
             <Link
@@ -271,7 +282,7 @@ const Dashboard = () => {
             </Link>
           </li>
           <li>
-            <a
+            {/* <a
               href=""
               class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
             >
@@ -292,64 +303,18 @@ const Dashboard = () => {
                 </svg>
               </span>
               <span>Reviews</span>
-            </a>
+            </a> */}
           </li>
+          <li></li>
+          <li></li>
           <li>
-            <a
-              href="#"
-              class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
+            <button
+              onClick={() => dispatch(logout())}
+              class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-red-700 focus:bg-red-700 hover:text-white focus:shadow-outline"
             >
               <span class="text-gray-600">
                 <svg
-                  class="h-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                  ></path>
-                </svg>
-              </span>
-              <span>All Products</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
-            >
-              <span class="text-gray-600">
-                <svg
-                  class="h-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
-              </span>
-              <span>Change password</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
-            >
-              <span class="text-gray-600">
-                <svg
-                  class="h-5"
+                  class="h-5 hover:bg-white"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -364,7 +329,7 @@ const Dashboard = () => {
                 </svg>
               </span>
               <span>Logout</span>
-            </a>
+            </button>
           </li>
         </ul>
       </div>
@@ -490,7 +455,7 @@ const Dashboard = () => {
                   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-4 xl:p-0 gap-4 xl:gap-6">
                     <div class="col-span-1 md:col-span-2 lg:col-span-4 flex justify-between">
                       <h2 class="text-xs md:text-sm text-gray-700 font-bold tracking-wide md:tracking-wider">
-                        Expenses By Category
+                        Analytics
                       </h2>
                       <a
                         href="#"
@@ -547,10 +512,10 @@ const Dashboard = () => {
                       <div class="flex justify-between items-start">
                         <div class="flex flex-col">
                           <p class="text-xs text-gray-600 tracking-wide">
-                            Gaming
+                            Users
                           </p>
                           <h3 class="mt-1 text-lg text-yellow-500 font-bold">
-                            $ 1,223
+                            {users && users?.length} Nos
                           </h3>
                           <span class="mt-4 text-xs text-gray-600">
                             Last Transaction 4 Days ago
@@ -569,10 +534,10 @@ const Dashboard = () => {
                       <div class="flex justify-between items-start">
                         <div class="flex flex-col">
                           <p class="text-xs text-gray-600 tracking-wide">
-                            Trip & Holiday
+                            Income
                           </p>
                           <h3 class="mt-1 text-lg text-indigo-500 font-bold">
-                            $ 5,918
+                            ₹{totalAmount}
                           </h3>
                           <span class="mt-4 text-xs text-gray-500">
                             Last Transaction 1 Month ago
@@ -606,7 +571,7 @@ const Dashboard = () => {
                           data={data2}
                           cx="50%"
                           cy="50%"
-                          labelLine={false}
+                          labelLine={true}
                           label={renderCustomizedLabel}
                           outerRadius={80}
                           fill="#8884d8"
@@ -623,7 +588,7 @@ const Dashboard = () => {
                       <span>instock 2</span>
                     </div>
                     <div class="col-span-3 bg-white p-6 rounded-xl border border-gray-50 flex flex-col space-y-6">
-                      <div class="flex justify-between items-center">
+                      {/* <div class="flex justify-between items-center">
                         <h2 class="text-sm text-gray-600 font-bold tracking-wide">
                           Latest Transactions
                         </h2>
@@ -773,7 +738,8 @@ const Dashboard = () => {
                             </svg>
                           </p>
                         </li>
-                      </ul>
+                      </ul> */}
+                      <h3>Currently Unavailable</h3>
                     </div>
                   </div>
                 </div>

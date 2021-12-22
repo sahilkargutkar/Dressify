@@ -221,7 +221,7 @@ const OrderDetails = ({ match }) => {
                   type="button"
                   aria-label="like"
                 >
-                  ₹
+                  ₹{order?.totalPrice}
                 </button>
               </div>
             </div>

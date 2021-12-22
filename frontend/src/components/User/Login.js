@@ -12,7 +12,6 @@ const Login = ({ history, location }) => {
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
   );
-  console.log(error, "skcscbucabac");
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -35,6 +34,7 @@ const Login = ({ history, location }) => {
 
     if (isAuthenticated) {
       history.push(redirect);
+      toast.success("Logged In Successfully");
     }
   }, [dispatch, error, toast, isAuthenticated, history, redirect]);
 

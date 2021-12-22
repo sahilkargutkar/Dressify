@@ -35,13 +35,11 @@ const Header = ({ user }) => {
 
   return (
     <>
-      <div class="p-3 text-gray-700 bg-gray-900 rounded-lg shadow-lg font-medium capitalize">
-        <span class="px-2 mr-2 border border-gray-800">
-          <img
-            src="https://www.freepnglogos.com/uploads/spotify-logo-png/file-spotify-logo-png-4.png"
-            alt="alt placeholder"
-            class="w-8 h-8 -mt-1 inline mx-auto"
-          />
+      <div class="p-3  text-gray-700 bg-gray-900 rounded-lg shadow-lg font-medium capitalize">
+        <span class="px-2 mr-2 ">
+          <h4 className="w-8 h-8 -mt-1 inline mx-auto font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+            Dressify
+          </h4>
         </span>
         <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
           <button onClick={() => history.push("/")} class="mx-1">
@@ -50,16 +48,13 @@ const Header = ({ user }) => {
         </span>
         <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
           <button onClick={toOrders} class="mx-1">
-            Orders
+            My Orders
           </button>
         </span>
         <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
           <button onClick={() => history.push("/products")} class="mx-1">
             Products
           </button>
-        </span>
-        <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">
-          <button class="mx-1">Menu</button>
         </span>
 
         {/* <span class="px-1 hover:text-white cursor-pointer w-8 relative">
@@ -178,7 +173,12 @@ const Header = ({ user }) => {
             ) : (
               <>
                 <div>
-                  <button>Login</button>
+                  <button
+                    onClick={() => history.push("/login")}
+                    class="align-middle bg-blue-500 hover:bg-blue-600 text-center px-4 py-2 text-white text-sm font-semibold rounded-lg inline-block shadow-lg"
+                  >
+                    LOGIN
+                  </button>
                 </div>
               </>
             )}
@@ -191,7 +191,16 @@ const Header = ({ user }) => {
             )}
           </span>
         ) : (
-          <></>
+          <>
+            <span className="absolute right-0 pr-10">
+              <button
+                onClick={() => history.push("/login")}
+                class=" rounded px-3 border-b-4 border-l-2 shadow-lg bg-blue-800 border-blue-900 text-white hover:border-transparent"
+              >
+                Login
+              </button>
+            </span>
+          </>
         )}
       </div>
     </>

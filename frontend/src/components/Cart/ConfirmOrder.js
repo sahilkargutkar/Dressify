@@ -16,6 +16,7 @@ const ConfirmOrder = ({ history }) => {
     (acc, item) => acc + item.quantity * item.price,
     0
   );
+  console.log(subtotal, "all price total");
 
   const paymentDetails = {
     id: new Date().valueOf(),
@@ -244,54 +245,28 @@ const ConfirmOrder = ({ history }) => {
                       <span class="text-gray-400">
                         {item?.quantity} x ₹{item?.price}
                       </span>
-                      <span class="text-pink-400 font-semibold inline-block">
+                      <span class="text-black font-semibold inline-block">
                         ₹{item?.quantity * item?.price}
                       </span>
                     </div>
                   </div>
                 </li>
               ))}
-
-            <li class="grid grid-cols-6 gap-2 border-b-1">
-              <div class="col-span-1 self-center">
-                <img
-                  src="https://bit.ly/3lCyoSx"
-                  alt="Product"
-                  class="rounded w-full"
-                />
-              </div>
-              <div class="flex flex-col col-span-3 pt-2">
-                <span class="text-gray-600 text-md font-semi-bold">
-                  Apple iPhone 13
-                </span>
-                <span class="text-gray-400 text-sm inline-block pt-2">
-                  Phone
-                </span>
-              </div>
-              <div class="col-span-2 pt-3">
-                <div class="flex items-center space-x-2 text-sm justify-between">
-                  <span class="text-gray-400">1 x €785</span>
-                  <span class="text-pink-400 font-semibold inline-block">
-                    €785
-                  </span>
-                </div>
-              </div>
-            </li>
           </ul>
 
           <div class="px-8 border-b">
             <div class="flex justify-between py-4 text-gray-600">
               <span>Subtotal</span>
-              <span class="font-semibold text-pink-500">₹{subtotal}</span>
+              <span class="font-semibold text-black">₹{subtotal}</span>
             </div>
             <div class="flex justify-between py-4 text-gray-600">
               <span>Shipping</span>
-              <span class="font-semibold text-pink-500">Free</span>
+              <span class="font-semibold text-black">Free</span>
             </div>
           </div>
           <div class="font-semibold text-xl px-8 flex justify-between py-8 text-gray-600">
             <span>Total</span>
-            <span>₹{totalPrice}</span>
+            <span>₹{subtotal}</span>
           </div>
         </div>
       </div>

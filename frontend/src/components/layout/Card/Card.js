@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ReactStars from "react-rating-stars-component";
+import { Rating } from "@mui/material";
 
 const Card = (props) => {
   const { product } = props;
@@ -8,32 +8,37 @@ const Card = (props) => {
   console.log(product, "someprops");
 
   const options = {
-    edit: false,
-    activeColor: "tomato",
-    size: window.innerWidth < 600 ? 20 : 25,
+    size: "medium",
     value: product?.ratings,
-    isHalf: true,
+    readOnly: true,
+    precision: 0.5,
   };
 
   return (
     <div>
       <Link to={`/product/${product?._id}`}>
         <div class="flex flex-col overflow-hidden transition duration-500 ease-in-out transform bg-white rounded-lg shadow-2xl hover:scale-105">
-          <img class="h-56 rounded-t-lg" alt="article image" src="" />
+          <img
+            class="h-56 rounded-t-lg"
+            alt="article image"
+            src={product?.images[0].url}
+          />
           <div class="px-6 pt-4 mb-2 text-xl font-bold">{product?.name}</div>
           <div class="relative text-xl px-6 pb-6 mt-6">
-            <span class="block opacity-75 -mb-1">
-              <ReactStars {...options} />
+            <span class="flex  opacity-75 -mb-1">
+              <Rating {...options} />
+              <span className="pl-2 text-lg">{product?.numOfReviews}</span>
             </span>
             <div class="flex justify-between">
               <span class="block font-semibold text-xl">
                 {product?.description}
               </span>
-              <span class=" bg-black rounded-full text-white text-xs font-bold px-3 py-2 leading-none flex items-center">
-                <span>₹</span>
-                {product?.price}
+              <span>
+                <span class=" bg-black rounded-full text-white text-xs font-bold px-3 py-2 leading-none flex items-center">
+                  <span>₹</span>
+                  {product?.price}
+                </span>
               </span>
-              <span>({product?.numOfReviews}Reviews)</span>
             </div>
           </div>
         </div>

@@ -47,14 +47,12 @@ const ConfirmOrder = ({ history }) => {
       totalPrice,
     };
     sessionStorage.setItem("orderInfo", JSON.stringify(data));
-    debugger;
     dispatch(createOrder(order));
 
     history.push("/success");
   };
 
   useEffect(() => {
-    debugger;
     if (error) {
       toast.error(error);
       dispatch(clearErrors());

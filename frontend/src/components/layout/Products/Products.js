@@ -74,7 +74,7 @@ const Products = ({ match }) => {
         <Loader />
       ) : (
         <>
-          <MetaData title="Dressify | PRODUCTS" />
+          <MetaData title="ClothesNow | PRODUCTS" />
           <div class="my-8">
             <div class="container mx-auto px-6">
               <div class="mt-16">

@@ -12,7 +12,6 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
 
   const onForgotPassword = (e) => {
-    debugger;
     console.log("form submitted");
 
     const myForm = new FormData();

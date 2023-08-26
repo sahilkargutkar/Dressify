@@ -24,8 +24,6 @@ const Register = ({ history }) => {
   const { name, email, password } = user;
 
   useEffect(() => {
-    debugger;
-
     if (error) {
       toast.error(error);
       dispatch(clearErrors());
@@ -76,7 +74,7 @@ const Register = ({ history }) => {
                   <div class="mb-5 pb-1border-b-2 text-center font-base text-gray-700"></div>
                   <h1 class="text-xl font-semibold">
                     Hello👋,{" "}
-                    <span class="font-normal">Welcome to Dressify</span>
+                    <span class="font-normal">Welcome to ClothesNow</span>
                   </h1>
                   <form
                     class="mt-8"

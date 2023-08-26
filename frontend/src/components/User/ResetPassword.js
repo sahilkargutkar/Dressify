@@ -14,7 +14,6 @@ const ResetPassword = ({ history, match }) => {
   const [confirmPassword, setConfirmPassword] = useState();
 
   const onUpdatePassword = (e) => {
-    debugger;
     console.log("form submitted");
 
     const myForm = new FormData();

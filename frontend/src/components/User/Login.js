@@ -25,8 +25,6 @@ const Login = ({ history, location }) => {
   const redirect = location.search ? location.search.split("=")[1] : "/account";
 
   useEffect(() => {
-    debugger;
-
     if (error) {
       toast.error(error);
       dispatch(clearErrors());

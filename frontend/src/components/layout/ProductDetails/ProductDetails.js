@@ -103,7 +103,7 @@ const ProductDetails = ({ match }) => {
         <Loader />
       ) : (
         <>
-          <MetaData title={`Dressify | ${product?.name}`} />
+          <MetaData title={`ClothesNow | ${product?.name}`} />
           <section class="text-gray-700 body-font overflow-hidden bg-white">
             <div class="container px-5 py-24 mx-auto">
               <div class="lg:w-4/5 mx-auto flex flex-wrap">

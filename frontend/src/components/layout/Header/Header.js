@@ -38,7 +38,7 @@ const Header = ({ user }) => {
       <div class="p-3  text-gray-700 bg-gray-900 rounded-lg shadow-lg font-medium capitalize">
         <span class="px-2 mr-2 ">
           <h4 className="w-8 h-8 -mt-1 inline mx-auto font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-            Dressify
+            ClothesNow
           </h4>
         </span>
         <span class="px-2 py-1 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm rounded mb-5">

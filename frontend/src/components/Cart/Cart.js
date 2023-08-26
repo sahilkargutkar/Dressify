@@ -9,7 +9,6 @@ const Cart = ({ history }) => {
   const { cartItems } = useSelector((state) => state.cart);
 
   useEffect(() => {
-    debugger;
     console.log(cartItems, "cscbabucasbcac");
   });
 

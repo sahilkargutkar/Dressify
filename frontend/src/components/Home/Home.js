@@ -1,22 +1,20 @@
 import React, { useEffect } from "react";
 import Card from "../layout/Card/Card";
-import Carousal from "../layout/Carousal/Carousal";
+// import Carousal from "../layout/Carousal/Carousal";
 import MetaData from "../layout/MetaData";
 import { clearErrors, getProduct } from "../../actions/productAction";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../layout/Loader/Loader";
 import { Link } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const Home = () => {
   const dispatch = useDispatch();
-  debugger;
   const { loading, error, products, productsCount } = useSelector(
     (state) => state.products
   );
 
   useEffect(() => {
-    debugger;
     if (error) {
       toast.error(error);
       dispatch(clearErrors());
@@ -34,7 +32,7 @@ const Home = () => {
         <Loader />
       ) : (
         <React.Fragment>
-          <MetaData title="Dressify | Home Page" />
+          <MetaData title="ClothesNow | Home Page" />
           <main class="my-8">
             <div class="container mx-auto px-6">
               <div

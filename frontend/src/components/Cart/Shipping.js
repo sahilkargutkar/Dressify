@@ -35,7 +35,7 @@ const Shipping = ({ history }) => {
     dispatch(
       saveShippingInfo({ address, city, state, country, pinCode, phoneNo })
     );
-    debugger;
+
     history.push("/order/confirm");
   };
 

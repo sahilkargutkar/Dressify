@@ -21,7 +21,6 @@ const UpdateProfile = ({ history }) => {
   const [email, setEmail] = useState("");
 
   const onUpdateProfile = (e) => {
-    debugger;
     console.log("form submitted");
 
     const myForm = new FormData();
